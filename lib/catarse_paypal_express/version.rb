@@ -1,3 +1,3 @@
-module CatarsePaypalExpress
+module AngelEdPaypalExpress
   VERSION = "0.1.0"
 end

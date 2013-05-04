@@ -35,7 +35,7 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   # Include Engine routes (needed for Controller specs)
-  config.include CatarsePaypalExpress::Engine.routes.url_helpers
+  config.include AngelEdPaypalExpress::Engine.routes.url_helpers
 
   # Include Catarse routes
   config.include Catarse::Application.routes.url_helpers

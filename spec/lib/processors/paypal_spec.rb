@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CatarsePaypalExpress::Processors::Paypal do
+describe AngelEdPaypalExpress::Processors::Paypal do
   context "process paypal details_for response" do
     let(:backer) { Factory(:backer, confirmed: false) }
 

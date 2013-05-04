@@ -1,4 +1,4 @@
-CatarsePaypalExpress::Engine.routes.draw do
+AngelEdPaypalExpress::Engine.routes.draw do
   namespace :payment do
     get '/paypal_express/:id/review' => 'paypal_express#review', :as => 'review_paypal_express'
     post '/paypal_express/notifications' => 'paypal_express#ipn',  :as => 'ipn_paypal_express'

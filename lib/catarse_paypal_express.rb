@@ -1,4 +1,4 @@
-require "catarse_paypal_express/engine"
+require "angel_ed_paypal_express/engine"
 
-module CatarsePaypalExpress
+module AngelEdPaypalExpress
 end

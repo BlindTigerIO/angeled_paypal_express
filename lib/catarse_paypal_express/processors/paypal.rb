@@ -1,4 +1,4 @@
-module CatarsePaypalExpress
+module AngelEdPaypalExpress
   module Processors
     class Paypal
 

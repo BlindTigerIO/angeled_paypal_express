@@ -1,4 +1,4 @@
-# CatarsePaypalExpress
+# AngelEdPaypalExpress
 
 Catarse paypal express integration with [Catarse](http://github.com/danielweinmann/catarse) crowdfunding platform
 
@@ -6,7 +6,7 @@ Catarse paypal express integration with [Catarse](http://github.com/danielweinma
 
 Add this lines to your Catarse application's Gemfile:
 
-    gem 'catarse_paypal_express'
+    gem 'angel_ed_paypal_express'
 
 And then execute:
 
@@ -16,7 +16,7 @@ And then execute:
 
 Configure the routes for your Catarse application. Add the following lines in the routes file (config/routes.rb):
 
-    mount CatarsePaypalExpress::Engine => "/", :as => "catarse_paypal_express"
+    mount AngelEdPaypalExpress::Engine => "/", :as => "angel_ed_paypal_express"
 
 ### Configurations
 
@@ -34,7 +34,7 @@ In Rails console, run this:
 
 Clone the repository:
 
-    $ git clone git://github.com/devton/catarse_paypal_express.git
+    $ git clone git://github.com/devton/angel_ed_paypal_express.git
 
 Add the catarse code into test/dummy:
 

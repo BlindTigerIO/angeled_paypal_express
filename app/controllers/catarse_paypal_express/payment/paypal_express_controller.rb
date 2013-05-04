@@ -1,6 +1,6 @@
-require 'catarse_paypal_express/processors'
+require 'angel_ed_paypal_express/processors'
 
-module CatarsePaypalExpress::Payment
+module AngelEdPaypalExpress::Payment
   class PaypalExpressController < ApplicationController
     skip_before_filter :verify_authenticity_token, :only => [:notifications]
     skip_before_filter :detect_locale, :only => [:notifications]
@@ -111,7 +111,7 @@ module CatarsePaypalExpress::Payment
   private
 
     def build_notification(backer, data)
-      processor = CatarsePaypalExpress::Processors::Paypal.new
+      processor = AngelEdPaypalExpress::Processors::Paypal.new
       processor.process!(backer, data)
     end
 
