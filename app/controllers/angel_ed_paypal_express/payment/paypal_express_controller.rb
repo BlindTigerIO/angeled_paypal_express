@@ -50,28 +50,28 @@ module AngelEdPaypalExpress::Payment
     end
 
     def pay
-      backer = current_user.backs.find params[:id]
+      donation = Donation.find params[:id]
       begin
-        response = @@gateway.setup_purchase(backer.price_in_cents, {
+        response = @@gateway.setup_purchase((donation.donation_amount  * 100).round, {
           ip: request.remote_ip,
-          return_url: payment_success_paypal_express_url(id: backer.id),
-          cancel_return_url: payment_cancel_paypal_express_url(id: backer.id),
-          currency_code: 'BRL',
-          description: t('paypal_description', scope: SCOPE, :project_name => backer.project.name, :value => backer.display_value),
-          notify_url: payment_notifications_paypal_express_url(id: backer.id)
+          return_url: payment_success_paypal_express_url(id: donation.id),
+          cancel_return_url: payment_cancel_paypal_express_url(id: donation.id),
+          currency_code: 'US',
+          description: t('paypal_description', scope: SCOPE, :project_name => "Angel Ed Donation!", :value => donation.donation_amount),
+          notify_url: payment_notifications_paypal_express_url(id: donation.id)
         })
 
-        backer.update_attribute :payment_method, 'PayPal'
-        backer.update_attribute :payment_token, response.token
+        donation.update_attribute :payment_method, 'PayPal'
+        donation.update_attribute :payment_token, response.token
 
-        build_notification(backer, response.params)
+        build_notification(donation, response.params)
 
         redirect_to @@gateway.redirect_url_for(response.token)
       rescue Exception => e
         ::Airbrake.notify({ :error_class => "Paypal Error", :error_message => "Paypal Error: #{e.inspect}", :parameters => params}) rescue nil
         Rails.logger.info "-----> #{e.inspect}"
         paypal_flash_error
-        return redirect_to main_app.new_project_backer_path(backer.project)
+        return redirect_to main_app.edit_donation_path(donation)
       end
     end
 

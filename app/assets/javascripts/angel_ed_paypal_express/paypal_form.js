@@ -1,5 +1,5 @@
 CATARSE.PayPalForm = CATARSE.UserDocument.extend({
-  el: '#catarse_paypal_express_form',
+  el: '#angel_ed_paypal_express_form',
 
   events: {
     'click input[type=submit]': 'onSubmitToPayPal',
