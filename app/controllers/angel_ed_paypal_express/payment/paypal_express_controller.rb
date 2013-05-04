@@ -52,7 +52,7 @@ module AngelEdPaypalExpress::Payment
     def pay
       donation = Donation.find params[:id]
       begin
-        response = @@gateway.setup_purchase((donation.donation_amount  * 100).round, {
+        response = @@gateway.setup_purchase(donation.price_in_cents, {
           ip: request.remote_ip,
           return_url: payment_success_paypal_express_url(id: donation.id),
           cancel_return_url: payment_cancel_paypal_express_url(id: donation.id),
@@ -76,29 +76,29 @@ module AngelEdPaypalExpress::Payment
     end
 
     def success
-      backer = current_user.backs.find params[:id]
+      donation = Donation.find params[:id]
       begin
-        @@gateway.purchase(backer.price_in_cents, {
+        @@gateway.purchase(donation.price_in_cents, {
           ip: request.remote_ip,
-          token: backer.payment_token,
+          token: donation.payment_token,
           payer_id: params[:PayerID]
         })
 
         # we must get the deatils after the purchase in order to get the transaction_id
-        details = @@gateway.details_for(backer.payment_token)
+        details = @@gateway.details_for(donation.payment_token)
 
-        build_notification(backer, details.params)
+        build_notification(donation, details.params)
 
         if details.params['transaction_id'] 
-          backer.update_attribute :payment_id, details.params['transaction_id']
+          donation.update_attribute :payment_id, details.params['transaction_id']
         end
         paypal_flash_success
-        redirect_to main_app.project_backer_path(project_id: backer.project.id, id: backer.id)
+        redirect_to main_app.donation_path(id: donation.id)
       rescue Exception => e
         ::Airbrake.notify({ :error_class => "Paypal Error", :error_message => "Paypal Error: #{e.message}", :parameters => params}) rescue nil
         Rails.logger.info "-----> #{e.inspect}"
         paypal_flash_error
-        return redirect_to main_app.new_project_backer_path(backer.project)
+        return redirect_to main_app.edit_donation_path(donation.id)
       end
     end
 
