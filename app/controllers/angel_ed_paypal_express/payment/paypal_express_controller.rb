@@ -9,7 +9,7 @@ module AngelEdPaypalExpress::Payment
 
     before_filter :setup_gateway
 
-    SCOPE = "projects.backers.checkout"
+    #SCOPE = "projects.backers.checkout"
 
     layout :false
 
@@ -18,13 +18,13 @@ module AngelEdPaypalExpress::Payment
     end
 
     def ipn
-      backer = Backer.where(:payment_id => params['txn_id']).first
-      if backer
-        notification = backer.payment_notifications.new({
+      donation = Donation.where(:payment_id => params['txn_id']).first
+      if donation
+        notification = donation.payment_notifications.new({
           extra_data: JSON.parse(params.to_json.force_encoding(params['charset']).encode('utf-8'))
         })
         notification.save!
-        backer.update_attributes({
+        donation.update_attributes({
           :payment_service_fee => params['mc_fee'],
           :payer_email => params['payer_email']
         })
@@ -36,10 +36,10 @@ module AngelEdPaypalExpress::Payment
     end
 
     def notifications
-      backer = Backer.find params[:id]
-      response = @@gateway.details_for(backer.payment_token)
+      donation = Donation.find params[:id]
+      response = @@gateway.details_for(donation.payment_token)
       if response.params['transaction_id'] == params['txn_id']
-        build_notification(backer, response.params)
+        build_notification(donation, response.params)
         render status: 200, nothing: true
       else
         render status: 404, nothing: true
@@ -103,16 +103,16 @@ module AngelEdPaypalExpress::Payment
     end
 
     def cancel
-      backer = current_user.backs.find params[:id]
+      donation = Donation.find params[:id]
       flash[:failure] = t('paypal_cancel', scope: SCOPE)
-      redirect_to main_app.new_project_backer_path(backer.project)
+      redirect_to main_app.edit_donation_path(donation.id)
     end
 
   private
 
-    def build_notification(backer, data)
+    def build_notification(donation, data)
       processor = AngelEdPaypalExpress::Processors::Paypal.new
-      processor.process!(backer, data)
+      processor.process!(donation, data)
     end
 
     def paypal_flash_error
