@@ -9,7 +9,7 @@ module AngelEdPaypalExpress::Payment
 
     before_filter :setup_gateway
 
-    #SCOPE = "projects.backers.checkout"
+    SCOPE = "donations.checkout"
 
     layout :false
 
