@@ -38,6 +38,9 @@ module AngelEdPaypalExpress::Payment
     def notifications
       donation = Donation.find params[:id]
       response = @@gateway.details_for(donation.payment_token)
+
+      Rails.logger.debug "NOTIFICATION: " + response.inspect()
+
       if response.params['transaction_id'] == params['txn_id']
         build_notification(donation, response.params)
         render status: 200, nothing: true

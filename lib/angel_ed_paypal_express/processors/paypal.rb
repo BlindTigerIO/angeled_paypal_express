@@ -5,8 +5,6 @@ module AngelEdPaypalExpress
       def process!(donation, data)
         status = data["checkout_status"] || "pending"
 
-        Rails.logger.debug "PAYPAL PROCESSOR: donation->" + donation.inspect() + "data->" + data.inspect()
-
         notification = donation.payment_notifications.new({
           extra_data: data
         })
