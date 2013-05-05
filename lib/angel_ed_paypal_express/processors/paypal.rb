@@ -2,16 +2,18 @@ module AngelEdPaypalExpress
   module Processors
     class Paypal
 
-      def process!(backer, data)
+      def process!(donation, data)
         status = data["checkout_status"] || "pending"
 
-        notification = backer.payment_notifications.new({
+        Rails.logger.debug "PAYPAL PROCESSOR: donation->" + donation.inspect() + "data->" + data.inspect()
+
+        notification = donation.payment_notifications.new({
           extra_data: data
         })
 
         notification.save!
 
-        backer.confirm! if success_payment?(status)
+        donation.confirm! if success_payment?(status)
       rescue Exception => e
         ::Airbrake.notify({ :error_class => "Paypal Processor Error", :error_message => "Paypal Processor Error: #{e.inspect}", :parameters => data}) rescue nil
       end
