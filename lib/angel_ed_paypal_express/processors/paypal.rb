@@ -11,6 +11,7 @@ module AngelEdPaypalExpress
           extra_data: data
         })
 
+        Rails.logger.debug "PAYPAL PROCESSOR NOTIFICATION: " + notification.inspect()
         notification.save!
 
         donation.confirm! if success_payment?(status)
