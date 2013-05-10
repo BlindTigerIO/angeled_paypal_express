@@ -64,7 +64,7 @@ module AngelEdPaypalExpress::Payment
           return_url: payment_success_paypal_express_url(id: donation.id),
           cancel_return_url: payment_cancel_paypal_express_url(id: donation.id),
           currency_code: 'USD',
-          description: t('paypal_description', scope: SCOPE, :project_name => "students in various majors", :value => donation.donation_amount),
+          description: donation.paypal_description,
           notify_url: payment_notifications_paypal_express_url(id: donation.id)
         })
 
