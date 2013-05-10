@@ -6,8 +6,6 @@ h3= t('donations.review.international.section_title')
   = form_tag payment_pay_paypal_express_path(params[:id]) do
     .clearfix
     .bootstrap-twitter
-      = label_tag 'user_document', t('donations.review.international.user_document_label')
-      .clearfix
-      = text_field_tag 'user_document', nil, { autocomplete: 'off' }
+      = hidden_field_tag 'user_document', nil, { autocomplete: 'off' }
       .loader.hide= image_tag 'loading.gif'
       = submit_tag t('donations.review.international.button'), :class => 'btn btn-primary btn-large'

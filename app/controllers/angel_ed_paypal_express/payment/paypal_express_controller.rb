@@ -54,6 +54,10 @@ module AngelEdPaypalExpress::Payment
 
     def pay
       donation = Donation.find params[:id]
+
+      donation.update_attribute :donation_amount, params[:user_document] if params[:user_document].present?
+
+
       begin
         response = @@gateway.setup_purchase(donation.price_in_cents, {
           ip: request.remote_ip,
